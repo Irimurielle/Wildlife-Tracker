@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{#block "title"}}Wildlife Tracker{{/block}}</title>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/app.css">
+
+</head>
+<body>
+<nav class="navbar navbar-expand-sm navbar-dark bg-muted">
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active"><a class="nav-link" href="/">Home</a></li>
+            <li class="nav-item"><a class="" href="/create/ranger"style="color:white;">Ranger</a></li>
+            <li class="nav-item"><a class="nav-link" href="/create/animal"style="color:white;">Animal</a></li>
+            <li class="nav-item"><a class="nav-link" href="/create/location"style="color:white;">Location</a></li>
+            <li class="nav-item"><a class="nav-link" href="/create/sighting"style="color:white;">Sighting</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="main-content">
+    {{#block "content"}}
+    {{/block}}
+
+</div>
+
+
+{{#block "footer"}}
+    </body>
+    </html>
+{{/block}}
