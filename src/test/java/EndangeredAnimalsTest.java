@@ -77,7 +77,7 @@ public class EndangeredAnimalsTest {
     }
 
     private EndangeredAnimals setNewAnimal() {
-        return new EndangeredAnimals(" Giraffe","endangered","healthy","young");
+        return new EndangeredAnimals(" Tiger","endangered","ill","adult");
     }
 
 
