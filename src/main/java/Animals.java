@@ -1,6 +1,4 @@
-import org.sql2o.Connection;
-import org.sql2o.Sql2oException;
-
+import org.sql2o.*;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,11 +9,12 @@ public class Animals implements DatabaseManagement{
     public String type;
     private String health;
     private String age;
-    public static final String ANIMAL_TYPE="normal";
-
-
+    public static final String ANIMAL_TYPE="non-endangered";
 
     public Animals(String name, String type) {
+        if(this.name.equals("")||this.type.equals("")||this.name.equals(null)||this.type.equals(null)){
+            throw new IllegalArgumentException("Fill all the fields");
+        }
         this.name= name;
         this.type=ANIMAL_TYPE;
         this.health="";
@@ -42,12 +41,7 @@ public class Animals implements DatabaseManagement{
     }
 
     public void save(){
-        if(this.name.equals("")||this.type.equals("")||this.name.equals(null)||this.type.equals(null)){
-            throw new IllegalArgumentException("Fields cannot be empty");
-        }
         try (Connection con= DB.sql2o.open()){
-
-
             String sql ="INSERT INTO animals (name,type) VALUES (:name,:type)";
 
             this.id=(int) con.createQuery(sql,true)
@@ -58,8 +52,6 @@ public class Animals implements DatabaseManagement{
         }
 
     }
-
-
     public void update(int id,String type,String health,String age) {
         try (Connection con = DB.sql2o.open()) {
             if (type.equals("")) {
@@ -91,13 +83,6 @@ public class Animals implements DatabaseManagement{
             System.out.println(ex);
         }
     }
-
-
-
-
-
-
-
     public static Animals find(int id){
         try (Connection con= DB.sql2o.open()){
             String sql= "SELECT * FROM animals WHERE id=:id";
@@ -110,7 +95,6 @@ public class Animals implements DatabaseManagement{
         }
 
     }
-
     public void delete(){
         try (Connection con= DB.sql2o.open()){
             String sql = "DELETE FROM animals WHERE id=:id";
