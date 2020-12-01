@@ -1,8 +1,7 @@
 import org.junit.Rule;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class RangersTest {
 
@@ -25,7 +24,7 @@ public class RangersTest {
 
     @Test
     public void emptynotsaved() {
-        Rangers ranger=new Rangers("","","0783245673");
+        Rangers ranger=new Rangers("","","marie@gmail.com");
         try{
             ranger.save();
             assertTrue(Rangers.all().get(0).equals(ranger));
@@ -37,7 +36,7 @@ public class RangersTest {
     @Test
     public void findById() {
         Rangers ranger= setNewRanger();
-        Rangers otherRanger=new Rangers("zilfa","2","0745677888");
+        Rangers otherRanger=new Rangers("marie","1","marie@gmail.com");
         ranger.save();
         otherRanger.save();
         Rangers foundRanger=Rangers.find(ranger.getId());
@@ -51,7 +50,7 @@ public class RangersTest {
         Rangers otherRanger=ranger;
         ranger.save();
         try {
-            ranger.update(ranger.getId(),"Ruth Mwangi","0714735954");
+            ranger.update(ranger.getId(),"Ruth ira","ruth@gmail.com");
             Rangers foundRanger=Rangers.find(ranger.getId());
             assertNotEquals(foundRanger,otherRanger);
             assertEquals(foundRanger.getId(),otherRanger.getId());
@@ -64,7 +63,7 @@ public class RangersTest {
     @Test
     public void entriesAreDeleted() {
         Rangers ranger= setNewRanger();
-        Rangers otherRanger=new Rangers("Sylvia","2","0726108898");
+        Rangers otherRanger=new Rangers("marie","1","marie@gmail.com");
         ranger.save();
         otherRanger.save();
         ranger.delete();
@@ -91,9 +90,8 @@ public class RangersTest {
 
     }
 
-    //helper class
     private Rangers setNewRanger() {
-        return new Rangers("Ruth","1","07123456");
+        return new Rangers("Marie","1","marie@gmail.com");
     }
 
 }

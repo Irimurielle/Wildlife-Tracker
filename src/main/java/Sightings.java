@@ -1,5 +1,4 @@
-import org.sql2o.Connection;
-
+import org.sql2o.*;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -17,6 +16,9 @@ public class Sightings {
 
 
     public Sightings(int location_id, int ranger_id, int animal_id) {
+        if(this.animal_id==-1||this.location_id==-1||this.ranger_id==-1){
+            throw new IllegalArgumentException("All fields must be filled");
+        }
         this.location_id = location_id;
         this.ranger_id = ranger_id;
         this.animal_id = animal_id;
@@ -82,10 +84,6 @@ public class Sightings {
     }
 
     public void save(){
-
-        if(this.animal_id==-1||this.location_id==-1||this.ranger_id==-1){
-            throw new IllegalArgumentException("All fields must be filled");
-        }
         try (Connection con= DB.sql2o.open()){
             String sql= "INSERT INTO sightings (animal_id,ranger_id,location_id,time) VALUES (:animal_id,:ranger_id," +
                     ":location_id,:time)";

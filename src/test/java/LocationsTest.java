@@ -1,8 +1,6 @@
 import org.junit.Rule;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class LocationsTest {
     @Rule
@@ -58,6 +56,6 @@ public class LocationsTest {
 
 
     private Locations setUpNewLocation() {
-        return new Locations("Zone B");
+        return new Locations("near river");
     }
 }
