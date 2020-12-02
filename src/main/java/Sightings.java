@@ -1,17 +1,15 @@
 import org.sql2o.*;
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class Sightings {
+public class Sightings implements DatabaseManagement {
 
     private int id;
     private int location_id;
     private int ranger_id;
     private int animal_id;
-    private Date date= new Date();
-    private Timestamp time;
+    private Timestamp timestamp;
 
 
 
@@ -22,7 +20,6 @@ public class Sightings {
         this.location_id = location_id;
         this.ranger_id = ranger_id;
         this.animal_id = animal_id;
-        this.time = new Timestamp(date.getTime());
 
     }
 
@@ -42,51 +39,14 @@ public class Sightings {
         return animal_id;
     }
 
-    public Timestamp getTime() {
-        return time;
-    }
-
-    public static List<Sightings> all(){
-        try (Connection con = DB.sql2o.open()){
-            String sql=("SELECT * FROM sightings");
-            return con.createQuery(sql)
-                    .executeAndFetch(Sightings.class);
-
-        }
-    }
-
-    public static Sightings find(int id){
-        try (Connection con= DB.sql2o.open()){
-            String sql="SELECT * FROM sightings WHERE id=:id";
-            return con.createQuery(sql)
-                    .addParameter("id",id)
-                    .executeAndFetchFirst(Sightings.class);
-
-        }
-    }
-
-    public void delete(){
-        try (Connection con= DB.sql2o.open()){
-            String sql="DELETE FROM sightings WHERE id=:id";
-            con.createQuery(sql)
-                    .addParameter("id",this.id)
-                    .executeUpdate();
-        }
-
-    }
-    public static void deleteAll(){
-        try (Connection con= DB.sql2o.open()){
-            String sql="DELETE FROM sightings";
-            con.createQuery(sql)
-                    .executeUpdate();
-        }
-
+    public String getTime() {
+        return String.format("%1$TD %1$TR", timestamp);
     }
 
     public void save(){
         try (Connection con= DB.sql2o.open()){
-            String sql= "INSERT INTO sightings (animal_id,ranger_id,location_id,time) VALUES (:animal_id,:ranger_id," +
-                    ":location_id,:time)";
+            String sql= "INSERT INTO sightings (animal_id,ranger_id,location_id,timestamp) VALUES (:animal_id,:ranger_id," +
+                    ":location_id,now())";
             String joinRanger="INSERT INTO rangers_sightings (ranger_id,sighting_id) VALUES (:ranger_id,:sighting_id)";
             String joinLocation="INSERT INTO locations_sightings (location_id,sighting_id) VALUES (:location_id," +
                     ":sighting_id)";
@@ -95,7 +55,7 @@ public class Sightings {
                     .addParameter("animal_id",this.animal_id)
                     .addParameter("ranger_id",this.ranger_id)
                     .addParameter("location_id",this.location_id)
-                    .addParameter("time",this.time)
+                    .addParameter("timestamp",this.timestamp)
                     .executeUpdate()
                     .getKey();
 
@@ -107,8 +67,30 @@ public class Sightings {
         }
 
     }
+    public static List<Sightings> all(){
+        try (Connection con = DB.sql2o.open()){
+            String sql=("SELECT * FROM sightings");
+            return con.createQuery(sql)
+                    .executeAndFetch(Sightings.class);
+        }
+    }
+    public static Sightings find(int id){
+        try (Connection con= DB.sql2o.open()){
+            String sql="SELECT * FROM sightings WHERE id=:id";
+            return con.createQuery(sql)
+                    .addParameter("id",id)
+                    .executeAndFetchFirst(Sightings.class);
+        }
+    }
+    public void delete(){
+        try (Connection con= DB.sql2o.open()){
+            String sql="DELETE FROM sightings WHERE id=:id";
+            con.createQuery(sql)
+                    .addParameter("id",this.id)
+                    .executeUpdate();
+        }
 
-
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -119,7 +101,6 @@ public class Sightings {
                 ranger_id == sightings.ranger_id &&
                 animal_id == sightings.animal_id;
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(id, location_id, ranger_id, animal_id);

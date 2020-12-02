@@ -52,16 +52,6 @@ public class AnimalsTest {
         testAnimal.delete();
         assertEquals(null,Animals.find(testAnimal.getId()));
     }
-    @Test
-    public void deleteAllEntries() {
-        Animals testAnimal=setNewAnimal();
-        Animals otherAnimal=setNewAnimal();
-        testAnimal.save();
-        otherAnimal.save();
-        Animals.deleteAll();
-        List<Animals> animals=Animals.all();
-        assertEquals(0,animals.size());
-    }
 
     @Test
     public void noEntryForEmptyNames(){

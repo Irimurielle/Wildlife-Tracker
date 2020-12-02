@@ -43,9 +43,7 @@ public class Rangers {
                     .executeAndFetch(Rangers.class);
 
         }
-
     }
-
     public void save(){
         try (Connection con= DB.sql2o.open()){
             String sql="INSERT INTO rangers (name,badge_number,email) VALUES (:name,:badge_number,:email)";
@@ -57,7 +55,6 @@ public class Rangers {
                     .getKey();
         }
     }
-
     public static Rangers find(int id){
         try (Connection con= DB.sql2o.open()){
             String sql="SELECT * FROM rangers WHERE id=:id";
@@ -65,9 +62,7 @@ public class Rangers {
                     .addParameter("id",id)
                     .executeAndFetchFirst(Rangers.class);
         }
-
     }
-
     public void update(int id,String name,String phone_number){
         try (Connection con= DB.sql2o.open()){
             String sql="UPDATE rangers SET name=:name,email=:email WHERE id=:id";
@@ -79,11 +74,8 @@ public class Rangers {
                     .addParameter("name",name)
                     .addParameter("email",email)
                     .executeUpdate();
-
         }
-
     }
-
     public void delete(){
         try (Connection con= DB.sql2o.open()){
             String sql="DELETE FROM rangers WHERE id=:id";
@@ -92,31 +84,25 @@ public class Rangers {
                     .executeUpdate();
         }
     }
-
-    public List<Sightings> getRangerSightings(){
+    public List<Sightings> getRanger(){
         try (Connection con= DB.sql2o.open()){
             String sql="SELECT sighting_id FROM rangers_sightings WHERE ranger_id=:ranger_id";
             List<Integer> sightings_ids=con.createQuery(sql)
                     .addParameter("ranger_id",this.getId())
                     .executeAndFetch(Integer.class);
             List<Sightings> sightings=new ArrayList<Sightings>();
-
             for(Integer sighting_id:sightings_ids){
                 String sightingsQuery="SELECT * FROM sightings WHERE id=:sighting_id";
                 Sightings sighting=con.createQuery(sightingsQuery)
                         .addParameter("sighting_id",sighting_id)
                         .executeAndFetchFirst(Sightings.class);
                 sightings.add(sighting);
-
             }
             if(sightings.size()==0){
                 throw new IllegalArgumentException("Ranger has no sighting");
             }
             else {return sightings;}
-
-
         }
-
     }
 
     @Override

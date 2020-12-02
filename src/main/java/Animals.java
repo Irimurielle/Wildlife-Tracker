@@ -43,14 +43,30 @@ public class Animals implements DatabaseManagement{
     public void save(){
         try (Connection con= DB.sql2o.open()){
             String sql ="INSERT INTO animals (name,type) VALUES (:name,:type)";
-
             this.id=(int) con.createQuery(sql,true)
                     .addParameter("name",this.name)
                     .addParameter("type",this.type)
                     .executeUpdate()
                     .getKey();
         }
+    }
+    public void delete(){
+        try (Connection con= DB.sql2o.open()){
+            String sql = "DELETE FROM animals WHERE id=:id";
+            con.createQuery(sql)
+                    .addParameter("id",this.id)
+                    .executeUpdate();
 
+        }
+    }
+    public static List<Animals> all(){
+        try (Connection con= DB.sql2o.open()) {
+            String sql ="SELECT * FROM animals";
+            return con.createQuery(sql)
+                    .throwOnMappingFailure(false)
+                    .executeAndFetch(Animals.class);
+
+        }
     }
     public void update(int id,String type,String health,String age) {
         try (Connection con = DB.sql2o.open()) {
@@ -69,7 +85,6 @@ public class Animals implements DatabaseManagement{
                         .addParameter("id", this.id)
                         .executeUpdate();
             } else {
-
                 String sql = "UPDATE animals SET type=:type,health=:health,age=:age WHERE id=:id";
                 con.createQuery(sql)
                         .addParameter("type", type)
@@ -79,51 +94,16 @@ public class Animals implements DatabaseManagement{
                         .executeUpdate();
             }
 
-        }catch (Sql2oException ex){
-            System.out.println(ex);
         }
     }
-    public static Animals find(int id){
-        try (Connection con= DB.sql2o.open()){
-            String sql= "SELECT * FROM animals WHERE id=:id";
-            Animals animal=  con.createQuery(sql)
-                    .addParameter("id",id)
-                    .throwOnMappingFailure(false)
-                    .executeAndFetchFirst(Animals.class);
-            return animal;
-
-        }
-
-    }
-    public void delete(){
-        try (Connection con= DB.sql2o.open()){
-            String sql = "DELETE FROM animals WHERE id=:id";
-            con.createQuery(sql)
-                    .addParameter("id",this.id)
-                    .executeUpdate();
-
-        }
-    }
-    public static void deleteAll(){
-        try (Connection con= DB.sql2o.open()){
-            String sql = "DELETE FROM animals";
-            con.createQuery(sql)
-                    .executeUpdate();
-        }  catch (Sql2oException ex){
-            System.out.println(ex);
-        }
-
-    }
-    public static List<Animals> all(){
-        try (Connection con= DB.sql2o.open()) {
-            String sql ="SELECT * FROM animals";
+    public static Animals find(int id) {
+        String sql = "SELECT * FROM animals WHERE id = :id;";
+        try (Connection con = DB.sql2o.open()) {
             return con.createQuery(sql)
-                    .throwOnMappingFailure(false)
-                    .executeAndFetch(Animals.class);
-
+                    .addParameter("id", id)
+                    .executeAndFetchFirst(Animals.class);
         }
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

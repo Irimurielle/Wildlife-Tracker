@@ -44,6 +44,6 @@ public class EndangeredAnimals extends Animals implements DatabaseManagement {
                     .executeUpdate()
                     .getKey();
         }
-
     }
+
 }
