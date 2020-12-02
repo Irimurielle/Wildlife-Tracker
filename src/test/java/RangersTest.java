@@ -9,89 +9,68 @@ public class RangersTest {
     public DatabaseRule databaseRule=new DatabaseRule();
 
     @Test
-    public void createInstanceOfRangersClass_true(){
-        Rangers ranger= setNewRanger();
-        assertEquals(true,ranger instanceof Rangers);
+    public void rangers_instantiatesCorrectly_true() {
+        Rangers testRanger = new Rangers("marie","M23","marie@gmail.com");
+        assertEquals(true, testRanger instanceof Rangers);
     }
 
     @Test
-    public void allEntriesAreSaved() {
-        Rangers ranger= setNewRanger();
-        ranger.save();
-        assertTrue(Rangers.all().get(0).equals(ranger));
-
+    public void getName_rangerInstantiatesWithName_String() {
+        Rangers testRanger = new Rangers("marie","M23","marie@gmail.com");
+        assertEquals("Marie", testRanger.getName());
     }
 
     @Test
-    public void emptynotsaved() {
-        Rangers ranger=new Rangers("","","marie@gmail.com");
-        try{
-            ranger.save();
-            assertTrue(Rangers.all().get(0).equals(ranger));
-        }catch (IllegalArgumentException e){
-            System.out.println(e);
-        }
+    public void getBadge_rangerInstantiatesWithBadge_String() {
+        Rangers testRanger = new Rangers("marie","M23","marie@gmail.com");
+        assertEquals("M23", testRanger.getBadge_number());
     }
 
     @Test
-    public void findById() {
-        Rangers ranger= setNewRanger();
-        Rangers otherRanger=new Rangers("marie","1","marie@gmail.com");
-        ranger.save();
-        otherRanger.save();
-        Rangers foundRanger=Rangers.find(ranger.getId());
-        assertTrue(foundRanger.equals(ranger));
-
+    public void getEmail_rangerInstantiatesWithEmail_String() {
+        Rangers testRanger = new Rangers("marie","M23","marie@gmail.com");
+        assertEquals("marie@gmail.com", testRanger.getEmail());
     }
 
     @Test
-    public void UpdatedEntry() {
-        Rangers ranger= setNewRanger();
-        Rangers otherRanger=ranger;
-        ranger.save();
-        try {
-            ranger.update(ranger.getId(),"Ruth ira","ruth@gmail.com");
-            Rangers foundRanger=Rangers.find(ranger.getId());
-            assertNotEquals(foundRanger,otherRanger);
-            assertEquals(foundRanger.getId(),otherRanger.getId());
-
-        }catch (IllegalArgumentException e){
-            System.out.println(e);
-        }
+    public void equals_returnsTrueIfNameAndEmailAreSame_true() {
+        Rangers firstRanger = new Rangers("marie","M23","marie@gmail.com");
+        Rangers anotherRanger = new Rangers("marie","M23","marie@gmail.com");
+        assertTrue(firstRanger.equals(anotherRanger));
     }
 
     @Test
-    public void entriesAreDeleted() {
-        Rangers ranger= setNewRanger();
-        Rangers otherRanger=new Rangers("marie","1","marie@gmail.com");
-        ranger.save();
-        otherRanger.save();
-        ranger.delete();
-        assertEquals(null,Rangers.find(ranger.getId()));
-
+    public void save_insertsObjectIntoDatabase_Rangers() {
+        Rangers testRanger = new Rangers("marie","M23","marie@gmail.com");
+        testRanger.save();
+        assertTrue(Rangers.all().get(0).equals(testRanger));
     }
 
     @Test
-    public void ReturningslightsForRanger() {
-        Rangers ranger=setNewRanger();
-        try {
-            Locations location=new Locations("Zone A");
-            ranger.save();
-            location.save();
-            Sightings sighting=new Sightings(location.getId(),ranger.getId(),1);
-            Sightings otherSighting=new Sightings(1,ranger.getId(),1);
-            sighting.save();
-            otherSighting.save();
-            assertEquals(ranger.getRangerSightings().get(0),sighting);
-            assertEquals(ranger.getRangerSightings().get(1),otherSighting);
-        }catch (IllegalArgumentException e){
-            System.out.println(e);
-        }
-
+    public void all_returnsAllInstancesOfRangers_true() {
+        Rangers firstRanger = new Rangers("marie","M23","marie@gmail.com");
+        firstRanger.save();
+        Rangers secondRanger = new Rangers("clarie","R56","claire@yahoo.com");
+        secondRanger.save();
+        assertEquals(true, Rangers.all().get(0).equals(firstRanger));
+        assertEquals(true, Rangers.all().get(1).equals(secondRanger));
     }
 
-    private Rangers setNewRanger() {
-        return new Rangers("Marie","1","marie@gmail.com");
+    @Test
+    public void save_assignsIdToObject() {
+        Rangers testRanger = new Rangers("marie","M23","marie@gmail.com");
+        testRanger.save();
+        Rangers savedRanger = Rangers.all().get(0);
+        assertEquals(testRanger.getId(), savedRanger.getId());
+    }
+
+    @Test
+    public void find_returnsRangersWithSameId_secondRanger() {
+        Rangers firstRanger = new Rangers("marie","M23","marie@gmail.com");
+        firstRanger.save();
+        Rangers secondRanger = new Rangers("clarie","R56","claire@yahoo.com");
+        secondRanger.save();
+        assertEquals(Rangers.find(secondRanger.getId()), secondRanger);
     }
 
 }

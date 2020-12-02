@@ -9,9 +9,6 @@ public class Locations {
     private  String name;
 
     public Locations(String name) {
-        if(name.equals("")){
-            throw new IllegalArgumentException("Fill the name");
-        }
         this.name = name;
     }
 
@@ -23,13 +20,16 @@ public class Locations {
         return name;
     }
 
-    public static List<Locations> all(){
-        try (Connection con= DB.sql2o.open()){
-            String sql="SELECT * FROM locations";
-            return con.createQuery(sql)
-                    .executeAndFetch(Locations.class);
+    @Override
+    public boolean equals(Object otherLocation){
+        if (!(otherLocation instanceof Locations)) {
+            return false;
+        } else {
+            Rangers newRanger = (Rangers) otherLocation;
+            return this.getName().equals(newRanger.getName());
         }
     }
+
     public void save(){
         try (Connection con= DB.sql2o.open()){
             String sql="INSERT INTO locations (name) VALUES (:name)";
@@ -39,6 +39,25 @@ public class Locations {
                     .getKey();
         }
     }
+
+    public static List<Locations> all(){
+        try (Connection con= DB.sql2o.open()){
+            String sql="SELECT * FROM locations";
+            return con.createQuery(sql)
+                    .executeAndFetch(Locations.class);
+        }
+    }
+
+    public static Locations find(int id){
+        try (Connection con= DB.sql2o.open()){
+            String sql="SELECT * FROM locations WHERE id=:id";
+            Locations location= con.createQuery(sql)
+                    .addParameter("id",id)
+                    .executeAndFetchFirst(Locations.class);
+            return location;
+        }
+    }
+
     public void delete(){
         try (Connection con= DB.sql2o.open()){
             String sql="DELETE FROM locations WHERE id=:id";
@@ -47,15 +66,7 @@ public class Locations {
                     .executeUpdate();
         }
     }
-    public static Locations find(int id){
-        try (Connection con= DB.sql2o.open()){
-            String sql="SELECT * FROM locations WHERE id=:id";
-            return con.createQuery(sql)
-                    .addParameter("id",id)
-                    .throwOnMappingFailure(false)
-                    .executeAndFetchFirst(Locations.class);
-        }
-    }
+
     public List<Sightings> getLocation(){
         try (Connection con= DB.sql2o.open()){
             String sql="SELECT sighting_id FROM locations_sightings WHERE location_id=:location_id";
@@ -77,17 +88,4 @@ public class Locations {
         }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Locations locations = (Locations) o;
-        return id == locations.id &&
-                name.equals(locations.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name);
-    }
 }

@@ -2,10 +2,8 @@
     <div class="container">
         <div class="indexRow">
             <div class="col-md-12 mb-4 white-text text-center">
-                <h3 class="text-warning text-uppercase font-weight-bold mb-0 pt-md-5 pt-5 animated wobble"><strong> Rangers: </strong></h3>
                 <div class="row">
                     <div class="col-sm-4 col-sm-offset-4">
-                        <a href="/rangers/new"><button type="button" class="btn btn-info">Add Ranger</button></a>
                         <h3>Rangers:</h3>
                             {{#if rangers}}
                                 {{#each rangers}}
@@ -28,6 +26,7 @@
                                         {{/each}}
                                 {{/if}}
                             {{/if}}
+                        <a href="/rangers/new"><button type="button" class="btn btn-success">Add</button></a>
                     </div>
                 </div>
             </div>

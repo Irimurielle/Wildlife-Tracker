@@ -8,57 +8,61 @@ public class AnimalsTest {
     public DatabaseRule databaseRule=new DatabaseRule();
 
     @Test
-    public void allAnimalsClass_true (){
-        Animals testAnimal=setNewAnimal ();
-        assertEquals (true, testAnimal instanceof Animals);
-    }
-
-    private Animals setNewAnimal (){
-        return new Animals ("zebra", "health");
+    public void animals_instantiatesCorrectly_true() {
+        Animals testAnimal = new Animals("Tiger", "non-endangered");
+        assertEquals(true, testAnimal instanceof Animals);
     }
 
     @Test
-    public void allInstances (){
-        Animals testAnimal=setNewAnimal ();
-        testAnimal.save ();
-        assertTrue (Animals.all ().get (0).equals (testAnimal));
+    public void getName_personInstantiatesWithName_String() {
+        Animals testAnimal = new Animals("Tiger", "non-endangered");
+        assertEquals("Tiger", testAnimal.getName());
     }
 
     @Test
-    public void updatingeEntry (){
-        Animals testAnimal=setNewAnimal ();
-        Animals otherAnimal=testAnimal;
-        testAnimal.save ();
-        try {
-            testAnimal.update (testAnimal.getId (), "endangered", "ill", "newborn");
-            Animals updatedAnimal=Animals.find (testAnimal.getId ());
-            assertEquals (updatedAnimal.getId (), otherAnimal.getId ());
-            assertNotEquals (updatedAnimal.getHealth (), otherAnimal.getHealth ());
-        } catch (IllegalArgumentException e) {
-
-        }
+    public void getType_personInstantiatesWithType_String() {
+        Animals testAnimal = new Animals("Tiger", "non-endangered");
+        assertEquals("endangered", testAnimal.getType());
     }
+
     @Test
-    public void findById() {
-        Animals testAnimal=setNewAnimal();
+    public void equals_returnsTrueIfNameAndTypeAreSame_true() {
+        Animals firstAnimal = new Animals("Tiger", "non-endangered");
+        Animals anotherAnimal = new Animals("Tiger", "non-endangered");
+        assertTrue(firstAnimal.equals(anotherAnimal));
+    }
+
+    @Test
+    public void save_insertsObjectIntoDatabase_Animals() {
+        Animals testAnimal = new Animals("Tiger", "non-endangered");
         testAnimal.save();
-        Animals foundAnimal= Animals.find(testAnimal.getId());
-        assertTrue(foundAnimal.equals(testAnimal));
-    }
-    @Test
-    public void deleteById() {
-        Animals testAnimal=setNewAnimal();
-        testAnimal.save();
-        testAnimal.delete();
-        assertEquals(null,Animals.find(testAnimal.getId()));
+        assertTrue(Animals.all().get(0).equals(testAnimal));
     }
 
     @Test
-    public void noEntryForEmptyNames(){
-        Animals testAnimal=new Animals("","normal");
-        try {
-            testAnimal.save();
-        }catch (IllegalArgumentException e) {
-        }
-}
+    public void all_returnsAllInstancesOfAnimals_true() {
+        Animals firstAnimal = new Animals("Tiger", "non-endangered");
+        firstAnimal.save();
+        Animals secondAnimal = new Animals("Lion", "non-endangered");
+        secondAnimal.save();
+        assertEquals(true, Animals.all().get(0).equals(firstAnimal));
+        assertEquals(true, Animals.all().get(1).equals(secondAnimal));
+    }
+
+    @Test
+    public void save_assignsIdToObject() {
+        Animals testAnimal = new Animals("Tiger", "non-endangered");
+        testAnimal.save();
+        Animals savedAnimal = Animals.all().get(0);
+        assertEquals(testAnimal.getId(), savedAnimal.getId());
+    }
+
+    @Test
+    public void find_returnsAnimalsWithSameId_secondAnimal() {
+        Animals firstAnimal = new Animals("Tiger", "non-endangered");
+        firstAnimal.save();
+        Animals secondAnimal = new Animals("Lion", "non-endangered");
+        secondAnimal.save();
+        assertEquals(Animals.find(secondAnimal.getId()), secondAnimal);
+    }
 }

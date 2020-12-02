@@ -15,9 +15,6 @@ public class EndangeredAnimals extends Animals implements DatabaseManagement {
     public static final String ANIMAL_TYPE="endangered";
     public EndangeredAnimals(String name, String type, String health, String age) {
         super(name,type);
-        if(this.name.equals("")||this.type.equals("")||this.health.equals("")||this.age.equals("")){
-            throw new IllegalArgumentException("Fields cannot be empty");
-        }
         this.type=type;
         this.health=health;
         this.age=age;

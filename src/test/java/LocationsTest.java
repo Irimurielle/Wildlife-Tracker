@@ -7,55 +7,51 @@ public class LocationsTest {
     public DatabaseRule databaseRule=new DatabaseRule();
 
     @Test
-    public void createInstanceOfLocationsClass() {
-        Locations location=setUpNewLocation();
-        assertEquals(true,location instanceof Locations);
+    public void locations_instantiatesCorrectly_true() {
+        Locations testLocation= new Locations("near river");
+        assertEquals(true,testLocation instanceof Locations);
     }
 
     @Test
-    public void allEntriesAreSaved() {
-        Locations location=setUpNewLocation();
-        Locations newLocation=new Locations("");
-        try {
-            location.save();
-            assertTrue(Locations.all().get(0).equals(location));
-            newLocation.save();
-
-        }catch (IllegalArgumentException e){
-            System.out.println(e);
-        }
-
+    public void getName_locationInstantiatesWithName_String() {
+        Locations testLocation = new Locations("near river");
+        assertEquals("near river", testLocation.getName());
     }
 
     @Test
-    public void entryIsDeletedSuccessfully() {
-        Locations location=setUpNewLocation();
-        Locations newLocation=new Locations("Zone B");
-        location.save();
-        newLocation.save();
-        location.delete();
-        assertEquals(null,Locations.find(location.getId()));
+    public void equals_returnsTrueIfNameAreSame_true() {
+        Locations firstLocation = new Locations("near river");
+        Locations anotherLocation = new Locations("near river");
+        assertTrue(firstLocation.equals(anotherLocation));
     }
     @Test
-    public void allSightingsAreReturnedForRanger() {
-        Locations location = setUpNewLocation();
-        try {
-
-            location.save();
-            Sightings sighting=new Sightings(location.getId(),1,1);
-            Sightings otherSighting=new Sightings(location.getId(),1,1);
-            sighting.save();
-            otherSighting.save();
-            assertEquals(location.getLocationSightings().get(0),sighting);
-            assertEquals(location.getLocationSightings().get(1),otherSighting);
-        }catch (IllegalArgumentException e){
-            System.out.println(e);
-        }
-
+    public void save_insertsObjectIntoDatabase_Locations() {
+        Locations testLocation = new Locations("near river");
+        testLocation.save();
+        assertTrue(Locations.all().get(0).equals(testLocation));
     }
-
-
-    private Locations setUpNewLocation() {
-        return new Locations("near river");
+    @Test
+    public void all_returnsAllInstancesOfLocations_true() {
+        Locations firstLocation = new Locations("near river");
+        firstLocation.save();
+        Locations secondLocation = new Locations("zone A");
+        secondLocation.save();
+        assertEquals(true, Locations.all().get(0).equals(firstLocation));
+        assertEquals(true, Locations.all().get(1).equals(secondLocation));
+    }
+    @Test
+    public void save_assignsIdToObject() {
+        Locations testLocation = new Locations("near river");
+        testLocation.save();
+        Locations savedLocation = Locations.all().get(0);
+        assertEquals(testLocation.getId(), savedLocation.getId());
+    }
+    @Test
+    public void find_returnsLocationsWithSameId_secondLocation() {
+        Locations firstLocation = new Locations("near river");
+        firstLocation.save();
+        Locations secondLocation = new Locations("zone A");
+        secondLocation.save();
+        assertEquals(Locations.find(secondLocation.getId()), secondLocation);
     }
 }

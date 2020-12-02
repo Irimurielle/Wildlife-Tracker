@@ -83,9 +83,9 @@ public class App {
 
         post("/sightings", (request, response) -> {
             Map<String, Object> model = new HashMap<>();
-            int location_id= Integer.parseInt(request.queryParams("location"));
-            int ranger_id= Integer.parseInt(request.queryParams("ranger"));
-            int animal_id= Integer.parseInt(request.queryParams("animal"));
+            int location_id= Integer.parseInt(request.queryParams("locations"));
+            int ranger_id= Integer.parseInt(request.queryParams("rangers"));
+            int animal_id= Integer.parseInt(request.queryParams("animals"));
             Sightings sighting=new Sightings(location_id,ranger_id,animal_id);
             sighting.save();
             return new ModelAndView(model,"newSighting.hbs");

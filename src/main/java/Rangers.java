@@ -35,15 +35,18 @@ public class Rangers {
         return email;
     }
 
-    public static List<Rangers> all(){
-        try (Connection con= DB.sql2o.open()){
-            String sql="SELECT * FROM rangers";
-            return con.createQuery(sql)
-                    .throwOnMappingFailure(false)
-                    .executeAndFetch(Rangers.class);
-
+    @Override
+    public boolean equals(Object otherRanger){
+        if (!(otherRanger instanceof Rangers)) {
+            return false;
+        } else {
+            Rangers newRanger = (Rangers) otherRanger;
+            return this.getName().equals(newRanger.getName()) &&
+                    this.getBadge_number().equals(newRanger.getBadge_number()) &&
+                    this.getEmail().equals(newRanger.getEmail());
         }
     }
+
     public void save(){
         try (Connection con= DB.sql2o.open()){
             String sql="INSERT INTO rangers (name,badge_number,email) VALUES (:name,:badge_number,:email)";
@@ -55,14 +58,25 @@ public class Rangers {
                     .getKey();
         }
     }
+
+    public static List<Rangers> all(){
+        try (Connection con= DB.sql2o.open()){
+            String sql="SELECT * FROM rangers";
+            return con.createQuery(sql).executeAndFetch(Rangers.class);
+
+        }
+    }
+
     public static Rangers find(int id){
         try (Connection con= DB.sql2o.open()){
             String sql="SELECT * FROM rangers WHERE id=:id";
-            return con.createQuery(sql)
+            Rangers ranger= con.createQuery(sql)
                     .addParameter("id",id)
                     .executeAndFetchFirst(Rangers.class);
+            return ranger;
         }
     }
+
     public void update(int id,String name,String phone_number){
         try (Connection con= DB.sql2o.open()){
             String sql="UPDATE rangers SET name=:name,email=:email WHERE id=:id";
@@ -103,21 +117,5 @@ public class Rangers {
             }
             else {return sightings;}
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Rangers rangers = (Rangers) o;
-        return id == rangers.id &&
-                name.equals(rangers.name) &&
-                badge_number.equals(rangers.badge_number) &&
-                email.equals(rangers.email);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, badge_number, email);
     }
 }

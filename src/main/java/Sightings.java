@@ -14,9 +14,6 @@ public class Sightings implements DatabaseManagement {
 
 
     public Sightings(int location_id, int ranger_id, int animal_id) {
-        if(this.animal_id==-1||this.location_id==-1||this.ranger_id==-1){
-            throw new IllegalArgumentException("All fields must be filled");
-        }
         this.location_id = location_id;
         this.ranger_id = ranger_id;
         this.animal_id = animal_id;
@@ -45,12 +42,9 @@ public class Sightings implements DatabaseManagement {
 
     public void save(){
         try (Connection con= DB.sql2o.open()){
-            String sql= "INSERT INTO sightings (animal_id,ranger_id,location_id,timestamp) VALUES (:animal_id,:ranger_id," +
-                    ":location_id,now())";
+            String sql= "INSERT INTO sightings (animal_id,ranger_id,location_id,timestamp) VALUES (:animal_id,:ranger_id,:location_id,now())";
             String joinRanger="INSERT INTO rangers_sightings (ranger_id,sighting_id) VALUES (:ranger_id,:sighting_id)";
-            String joinLocation="INSERT INTO locations_sightings (location_id,sighting_id) VALUES (:location_id," +
-                    ":sighting_id)";
-
+            String joinLocation="INSERT INTO locations_sightings (location_id,sighting_id) VALUES (:location_id,:sighting_id)";
             this.id=(int) con.createQuery(sql,true)
                     .addParameter("animal_id",this.animal_id)
                     .addParameter("ranger_id",this.ranger_id)
@@ -67,19 +61,20 @@ public class Sightings implements DatabaseManagement {
         }
 
     }
-    public static List<Sightings> all(){
-        try (Connection con = DB.sql2o.open()){
-            String sql=("SELECT * FROM sightings");
-            return con.createQuery(sql)
-                    .executeAndFetch(Sightings.class);
+    public static List<Sightings> all() {
+        String sql = "SELECT * FROM sightings";
+        try(Connection con = DB.sql2o.open()) {
+            return con.createQuery(sql).executeAndFetch(Sightings.class);
         }
     }
-    public static Sightings find(int id){
-        try (Connection con= DB.sql2o.open()){
-            String sql="SELECT * FROM sightings WHERE id=:id";
-            return con.createQuery(sql)
-                    .addParameter("id",id)
+
+    public static Sightings find(int id) {
+        try(Connection con = DB.sql2o.open()) {
+            String sql = "SELECT * FROM sightings where id=:id";
+            Sightings sighting = con.createQuery(sql)
+                    .addParameter("id", id)
                     .executeAndFetchFirst(Sightings.class);
+            return sighting;
         }
     }
     public void delete(){
