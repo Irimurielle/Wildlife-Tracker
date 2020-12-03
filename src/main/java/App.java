@@ -7,16 +7,16 @@ import java.util.Map;
 import static spark.Spark.*;
 
 public class App {
-    public static void main(String[] args) {
-        ProcessBuilder process = new ProcessBuilder();
-        Integer port;
-        if (process.environment().get("PORT") != null) {
-            port = Integer.parseInt(process.environment().get("PORT"));
-        } else {
-            port = 4567;
+    static int getHerokuAssignedPort() {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        if (processBuilder.environment().get("PORT") != null) {
+            return Integer.parseInt(processBuilder.environment().get("PORT"));
         }
-
-        port(port);
+        return 4567;
+    }
+    public static void main(String[] args) {
+        port(getHerokuAssignedPort());
+        staticFileLocation("/public");
 
         get("/",(request, response) -> {
             Map<String,Object> model=new HashMap<>();
