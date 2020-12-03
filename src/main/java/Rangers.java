@@ -1,7 +1,6 @@
 import org.sql2o.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class Rangers {
 
@@ -77,7 +76,7 @@ public class Rangers {
         }
     }
 
-    public void update(int id,String name,String phone_number){
+    public void update(int id,String name,String email){
         try (Connection con= DB.sql2o.open()){
             String sql="UPDATE rangers SET name=:name,email=:email WHERE id=:id";
             if(name.equals("")||email.equals("")){

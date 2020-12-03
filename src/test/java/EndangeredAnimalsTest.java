@@ -10,20 +10,20 @@ public class EndangeredAnimalsTest {
 
     @Test
     public void allEndangeredAnimalsClass_true(){
-        EndangeredAnimals testAnimal= setNewAnimal();
+        EndangeredAnimals testAnimal= new EndangeredAnimals("Lion","endangered","okay","newborn");
         assertEquals(true,testAnimal instanceof EndangeredAnimals);
     }
 
     @Test
     public void allInstancesAreSaved(){
-        EndangeredAnimals testAnimal=setNewAnimal();
+        EndangeredAnimals testAnimal=new EndangeredAnimals("Lion","endangered","okay","newborn");
         testAnimal.save();
         assertTrue(EndangeredAnimals.all().get(0).getHealth().equals(testAnimal.getHealth()));
     }
 
     @Test
-    public void findByID(){
-        EndangeredAnimals testAnimal=setNewAnimal();
+    public void findById(){
+        EndangeredAnimals testAnimal=new EndangeredAnimals("Lion","endangered","okay","newborn");
         testAnimal.save();
         Animals foundAnimal= Animals.find(testAnimal.getId());
         assertTrue(foundAnimal.getHealth().equals(testAnimal.getHealth()));
@@ -31,7 +31,7 @@ public class EndangeredAnimalsTest {
     }
     @Test
     public void deleteByID(){
-        EndangeredAnimals testAnimal=setNewAnimal();
+        EndangeredAnimals testAnimal=new EndangeredAnimals("Lion","endangered","okay","newborn");
         testAnimal.save();
         testAnimal.delete();
         assertEquals(null,Animals.find(testAnimal.getId()));
@@ -46,39 +46,4 @@ public class EndangeredAnimalsTest {
 
         }
     }
-
-    @Test
-    public void deleteAllEntries(){
-        EndangeredAnimals testAnimal=setNewAnimal();
-        EndangeredAnimals otherAnimal=setNewAnimal();
-        testAnimal.save();
-        otherAnimal.save();
-        Animals.deleteAll();
-        List<Animals> animals=Animals.all();
-        assertEquals(0,animals.size());
-
-
-    }
-
-    @Test
-    public void updatingEntry(){
-        EndangeredAnimals testAnimal=setNewAnimal();
-        EndangeredAnimals otherAnimal=testAnimal;
-        testAnimal.save();
-        try {
-            testAnimal.update(testAnimal.getId(),"endangered","okay","newborn");
-            Animals updatedAnimal=  Animals.find(testAnimal.getId());
-            assertEquals(updatedAnimal.getId(),otherAnimal.getId());
-            assertNotEquals(updatedAnimal.getHealth(),otherAnimal.getHealth());
-        }catch (IllegalArgumentException e){
-
-        }
-
-    }
-
-    private EndangeredAnimals setNewAnimal() {
-        return new EndangeredAnimals(" Tiger","endangered","ill","adult");
-    }
-
-
 }

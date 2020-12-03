@@ -20,9 +20,9 @@ public class AnimalsTest {
     }
 
     @Test
-    public void getType_personInstantiatesWithType_String() {
+    public void getType_animalsInstantiatesWithType_String() {
         Animals testAnimal = new Animals("Tiger", "non-endangered");
-        assertEquals("endangered", testAnimal.getType());
+        assertEquals("non-endangered", testAnimal.getType());
     }
 
     @Test
@@ -64,5 +64,27 @@ public class AnimalsTest {
         Animals secondAnimal = new Animals("Lion", "non-endangered");
         secondAnimal.save();
         assertEquals(Animals.find(secondAnimal.getId()), secondAnimal);
+    }
+
+    @Test
+    public void deleteById() {
+        Animals testAnimal=new Animals("Tiger","non-endangered");
+        testAnimal.save();
+        testAnimal.delete();
+        assertEquals(null,Animals.find(testAnimal.getId()));
+    }
+
+    @Test
+    public void ensureEntryIsUpdatedCorrectlyAndNonCanBeEmpty() {
+        Animals testAnimal=new Animals("Tiger","");
+        Animals otherAnimal=testAnimal;
+        testAnimal.save();
+        try {
+            testAnimal.update(testAnimal.getId(),"endangered","ill","newborn");
+            Animals updatedAnimal=  Animals.find(testAnimal.getId());
+            assertEquals(updatedAnimal.getId(),otherAnimal.getId());
+            assertNotEquals(updatedAnimal.getHealth(),otherAnimal.getHealth());
+        }catch (IllegalArgumentException e){
+        }
     }
 }

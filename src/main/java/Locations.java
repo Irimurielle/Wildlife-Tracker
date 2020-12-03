@@ -25,8 +25,8 @@ public class Locations {
         if (!(otherLocation instanceof Locations)) {
             return false;
         } else {
-            Rangers newRanger = (Rangers) otherLocation;
-            return this.getName().equals(newRanger.getName());
+            Locations newLocation = (Locations) otherLocation;
+            return this.getName().equals(newLocation.getName());
         }
     }
 

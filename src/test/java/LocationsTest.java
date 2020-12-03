@@ -54,4 +54,11 @@ public class LocationsTest {
         secondLocation.save();
         assertEquals(Locations.find(secondLocation.getId()), secondLocation);
     }
+    @Test
+    public void delete_deletesLocation_true() {
+        Locations testLocation = new Locations("near river");
+        testLocation.save();
+        testLocation.delete();
+        assertEquals(0, Locations.all().size());
+    }
 }

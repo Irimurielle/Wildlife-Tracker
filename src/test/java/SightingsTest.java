@@ -42,7 +42,7 @@ public class SightingsTest {
     public void save_insertsObjectIntoDatabase_Sightings() {
         Sightings testSighting = new Sightings(1,1,1);
         testSighting.save();
-        assertTrue(Animals.all().get(0).equals(testSighting));
+        assertTrue(Sightings.all().get(0).equals(testSighting));
     }
 
     @Test
@@ -70,5 +70,14 @@ public class SightingsTest {
         Sightings secondSighting = new Sightings(4,2,3);
         secondSighting.save();
         assertEquals(Sightings.find(secondSighting.getId()), secondSighting);
+    }
+
+    @Test
+    public void deleteSightingByID() {
+        Sightings testRegSighting = new Sightings(1, 1, 1);
+        testRegSighting.save();
+        testRegSighting.delete();
+        assertEquals(null,Sightings.find(testRegSighting.getId()));
+
     }
 }

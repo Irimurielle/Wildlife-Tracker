@@ -17,7 +17,7 @@ public class RangersTest {
     @Test
     public void getName_rangerInstantiatesWithName_String() {
         Rangers testRanger = new Rangers("marie","M23","marie@gmail.com");
-        assertEquals("Marie", testRanger.getName());
+        assertEquals("marie", testRanger.getName());
     }
 
     @Test
@@ -71,6 +71,14 @@ public class RangersTest {
         Rangers secondRanger = new Rangers("clarie","R56","claire@yahoo.com");
         secondRanger.save();
         assertEquals(Rangers.find(secondRanger.getId()), secondRanger);
+    }
+
+    @Test
+    public void delete_deletesLocation() {
+        Rangers testRegRanger = new Rangers("marie","M23","marie@gmail.com");
+        testRegRanger.save();
+        testRegRanger.delete();
+        assertEquals(0, Rangers.all().size());
     }
 
 }
