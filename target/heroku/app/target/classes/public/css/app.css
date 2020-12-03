@@ -1,0 +1,20 @@
+body{
+    background-image:url("/images/elephant.jpg");
+    background-size:cover;
+}
+.animals{
+    background-image: url("/images/elephant.jpg");
+    background-size:cover;
+}
+.locations{
+    background-image: url("/images/elephant.jpg");
+    background-size:cover;
+}
+.rangers{
+    background-image: url("/images/elephant.jpg");
+    background-size:cover;
+}
+.sightings{
+    background-image: url("/images/elephant.jpg");
+    background-size:cover;
+}

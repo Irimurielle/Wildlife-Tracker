@@ -1,0 +1,37 @@
+{{#partial "content"}}
+    <div class="container">
+        <div class="indexRow">
+            <div class="col-md-12 mb-4 white-text text-center">
+                <div class="row">
+                    <div class="col-sm-4 col-sm-offset-4 locations">
+                        <h3>Locations:</h3>
+                            {{#if locations}}
+                                {{#each rangers}}
+                                    <p class="text" id={{locations.id}}>{{locations.name}}</p><br>
+                                {{/each}}
+                                {{#if sightings}}
+                                    <h1>Sightings</h1>
+                                    <h3>Time</h3>
+                                        {{#each sightings}}
+                                            <li>{{sightings.timestamp}}</li>
+                                        {{/each}}
+                                    <h3>Animal</h3>
+                                        {{#each animals}}
+                                            <li >{{animals}}</li>
+                                        {{/each}}
+                                    <h3>Type</h3>
+                                    <hr>
+                                        {{#each type}}
+                                            <li>{{type}}</li>
+                                        {{/each}}
+                                {{/if}}
+                            {{/if}}
+                        <a href="/locations/new"><button type="button" class="btn btn-success">Add Location</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{{/partial}}
+
+{{> layout.hbs}}

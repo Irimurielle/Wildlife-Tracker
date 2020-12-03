@@ -1,0 +1,24 @@
+{{#partial "content"}}
+    <div class="container">
+        <div class="indexRow">
+            <div class="col-md-12 mb-4 white-text text-center">
+                <div class="row">
+                    <div class="col-sm-4 col-sm-offset-4 animals">
+                        <h3 class="text-center">Animals:</h3>
+                            {{#if animals}}
+                                {{#each animals}}
+                                    <h5>{{animals.name}}</h5>
+                                    <p>{{animals.type}}</p>
+                                    <p>{{animals.health}}</p>
+                                    <p>{{animals.age}}</p>
+                                {{/each}}
+                            {{/if}}
+                        <a href="/animals/new"><button type="button" class="btn btn-success">Add Animal</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{{/partial}}
+
+{{> layout.hbs}}

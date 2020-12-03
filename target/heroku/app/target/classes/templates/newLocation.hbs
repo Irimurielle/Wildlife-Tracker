@@ -1,0 +1,24 @@
+{{#partial "content"}}
+    <div class="container">
+        <div class="indexRow">
+            <div class="col-md-12 mb-4 white-text text-center">
+                <div class="row">
+                    <div class="col-sm-4 col-sm-offset-4 locations">
+                        <div class="content">
+                              <h3 class="text-center">Add Location</h3>
+                              <form action="/locations" method="post">
+                                  <div class="form-group">
+                                      <label for="name">Name:</label>
+                                      <input type="text" id="name" name="name" class="form-control">
+                                  </div>
+                                  <button class="btn btn-success" type="submit">Add</button>
+                              </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{{/partial}}
+
+{{> layout.hbs}}
